@@ -1,0 +1,29 @@
+on:
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+jobs:
+    store_front:
+        runs-on: ubuntu-Latest
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v2
+            - name: install dependincies
+              run: npm install
+              working-directory: src/store-front
+            - name: build the package
+              run: npm run build
+              working-directory: src/store-front
+            - name: run tests
+              run: npm run test
+              working-directory: src/store-front
+            - name: zip build output
+              run: zip -r store-front.zip dist
+              working-directory: src/store-front
+            - name: upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                name: store-front
+                path: dist.zip
+
